@@ -10,6 +10,55 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const teamMembers = [];
+const idArray = [];
+
+function teamMenu() {
+
+    function createManager() {
+        console.log ("Build your team");
+        inquirer.prompt{[
+            {
+                type: "input",
+                name: "managerName",
+                message: "What is the team manager's name?",
+                validate: answer => {
+                    if (answer !== "") {
+                        return true;
+                    }
+                    return "Please enter at least one character.";
+                }
+            },
+            {
+                type: "input",
+                name: "managerID",
+                message: "What is the team manager' id?",
+                
+            },
+            {
+                type: "input",
+                name: "managerEmail",
+                message: "What is the manager's email?",
+            },
+            {
+                type: "input",
+                name: "officeNumber",
+                message: "What is your office number?",
+            },
+            
+
+        
+                
+
+    }
+  
+    ]
+
+
+
+    )
+}
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
