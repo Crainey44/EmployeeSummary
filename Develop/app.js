@@ -13,11 +13,11 @@ const render = require("./lib/htmlRenderer");
 const teamMembers = [];
 const idArray = [];
 
-function teamMenu() {
+function appMenu() {
 
     function createManager() {
         console.log ("Build your team");
-        inquirer.prompt{[
+        inquirer.prompt([
             {
                 type: "input",
                 name: "managerName",
@@ -32,7 +32,7 @@ function teamMenu() {
             {
                 type: "input",
                 name: "managerID",
-                message: "What is the team manager' id?",
+                message: "What is the manager's id?",
                 
             },
             {
@@ -42,22 +42,139 @@ function teamMenu() {
             },
             {
                 type: "input",
-                name: "officeNumber",
-                message: "What is your office number?",
+                name: "managerOfficeNumber",
+                message: "What is the manager's office number?",
+            },  
+        ]).then(answers => {
+        const manager = new Manager(answers.managerName, answers.managerID, answers.managerEmail, answers.managerOfficeNumber);
+        teamMembers.push(manager);
+        idArray.push(answers.managerID);
+        createTeam();
+    });
+
+    function createTeam() {
+
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "memberChoice",
+                message: "Which type of team member would you like to add?",
+                choices: [
+                    "Engineer",
+                    "Intern",
+                    "I don't want to add any more team members"
+                ]
+            }
+        ]).then(userChoice => {
+            switch (userChoice.memberChoice) {
+                case "Engineer":
+                    addEngineer();
+                    break;
+                case "Intern":
+                    addIntern();
+                    break;
+                default:
+                    buildTeam();    
+            }
+        }); 
+
+        function addEngineer() {
+            inquirer.prompt([
+                {
+                type: "input",
+                name: "engineerName",
+                message: "What is your engineer's name?",
+                validate: answer => {
+                    if (answer !== "") {
+                        return true;
+                    }
+                    return "Please enter at least one character.";
+                }
             },
-            
+            {
+                type: "input",
+                name: "engineerId",
+                message: "What is your engineer's id?",
 
+            },
+            {
+                type: "input",
+                name: "engineerEmail",
+                message: "What is the engineer's email?",
+            },
+            {
+                type: "input",
+                name: "engineerGithub",
+                message: "What is the engineer's Github username?",
+            },
+            ]).then(answers => {
+                const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub);
+                teamMembers.push(engineer);
+                idArray.push(answers.engineerId);
+                createTeam();
+            });
+        }
+
+        function addIntern() {
+            inquirer.prompt([
+                {
+                type: "input",
+                name: "internName",
+                message: "What is your intern's name?",
+                validate: answer => {
+                    if (answer !== "") {
+                        return true;
+                    }
+                    return "Please enter at least one character.";
+                }
+            },
+            {
+                type: "input",
+                name: "internId",
+                message: "What is your intern's id?",
+
+            },
+            {
+                type: "input",
+                name: "internEmail",
+                message: "What is the intern's email?",
+            },
+            {
+                type: "input",
+                name: "internSchool",
+                message: "What school did the intern attend?",
+            },
+            ]).then(answers => {
+                const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool);
+                teamMembers.push(intern);
+                idArray.push(answers.internId);
+                createTeam();
+            });
+        }
+
+        function buildTeam() {
+            if (!fs.existsSync(OUTPUT_DIR)) {
+                fs.mkdirSync(OUTPUT_DIR)
+            }
+            fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
+        }
+
+        createManager();
         
-                
+        }
 
-    }
+        appMenu();
+
+    };
+    
+    
+
   
-    ]
+    
 
 
 
-    )
-}
+    
 
 
 // Write code to use inquirer to gather information about the development team members,
@@ -81,4 +198,4 @@ function teamMenu() {
 // and Intern classes should all extend from a class named Employee; see the directions
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+// for the provided `render` function to work! ``
