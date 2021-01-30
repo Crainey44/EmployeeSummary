@@ -4,7 +4,7 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
+// console.log("i'm in the file")
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
@@ -14,7 +14,7 @@ const teamMembers = [];
 const idArray = [];
 
 function appMenu() {
-
+// console.log("I'm in the app menu")
     function createManager() {
         console.log ("Build your team");
         inquirer.prompt([
@@ -159,16 +159,17 @@ function appMenu() {
             fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
         }
 
-        createManager();
+        
         
         }
 
-        appMenu();
+        
 
     };
+    createManager();
 
 };
-
+appMenu();
 
   
     
