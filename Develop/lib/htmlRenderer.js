@@ -5,11 +5,12 @@ const templatesDir = path.resolve(__dirname, "../templates");
 
 const render = employees => {
   const html = [];
-
-  html.push(...employees
-    .filter(employee => employee.getRole() === "Manager")
-    .map(manager => renderManager(manager))
+  html.push(...employees.filter(employee => employee.getRole() === "Manager")
+  .map(manager => {
+    renderManager(manager)
+  })
   );
+  // console.log('html: ', html)
   html.push(...employees
     .filter(employee => employee.getRole() === "Engineer")
     .map(engineer => renderEngineer(engineer))
@@ -24,6 +25,7 @@ const render = employees => {
 };
 
 const renderManager = manager => {
+  console.log('manager:', manager)
   let template = fs.readFileSync(path.resolve(templatesDir, "manager.html"), "utf8");
   template = replacePlaceholders(template, "name", manager.getName());
   template = replacePlaceholders(template, "role", manager.getRole());
